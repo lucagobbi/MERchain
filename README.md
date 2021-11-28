@@ -32,7 +32,7 @@ Once you are in the Merchain folder run these commands:
 
 ```
 python manage.py makemigrations
-python manage.py migrate
+python manage.py migrate --run-syncdb
 ```
 
 Now you can launch the website locally running:
@@ -45,6 +45,10 @@ python manage.py runserver
 
 Using the platform is really intuitive: create some accounts, open some auctions and start to bid on some products.
 Every auction has a deadline set by the seller, if the auction is successful a JSON containing all the details related to the operation is hashed and broadcasted to the Ethereum blockchain (Ropsten testnet).
+
+### Redis
+
+MERchain also implements a Redis db to handle and track every operation related to the auctions. 
 
 ### License
 
