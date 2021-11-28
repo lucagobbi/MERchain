@@ -48,7 +48,18 @@ Every auction has a deadline set by the seller, if the auction is successful a J
 
 ### Redis
 
-MERchain also implements a Redis db to handle and track every operation related to the auctions. 
+MERchain also implements a Redis db to handle and track every operation related to the auctions. Open your redis-cli connected to your local host and run:
+
+```
+keys *
+```
+to return the auction and the related seller. For each key you can run:
+
+```
+lrange key 0 -1
+```
+to return every interaction with this specific auction.
+
 
 ### License
 
