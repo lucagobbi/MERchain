@@ -6,7 +6,7 @@ MERchain is an auction website written in Django which implements blockchain not
 
 ### Set up
 
-Once you have downloaded the source code from Github you should create a virtual environment to launch the website locally. 
+Once you have downloaded the source code from Github, you should create a virtual environment to launch the website locally. 
 
 Be sure you have Python installed in your machine, this project is built with Python 3.9.5.
 
