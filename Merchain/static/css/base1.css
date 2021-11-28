@@ -1,0 +1,75 @@
+body{
+    background: linear-gradient(to right, #12232E, #203647);
+}
+
+h1{
+    padding: 30px; 
+    font-size: 3rem;
+    color: white;
+    font-family: 'Nothing You Could Do', cursive; 
+    font-weight: 800;
+    text-decoration: none;
+}
+
+h1:hover{
+    text-shadow: 0px 0px 3px #bbbbbb;
+    transition: 1s;
+}
+
+h2, h4{
+    margin-top: 20px;
+    margin-bottom: 30px;
+    color: white;
+}
+
+form{
+    color: white;
+}
+
+.btn-info{
+    background: #3b6585;
+    border-style: none;
+}
+
+.btn-info:hover{
+    background: #4b789b;
+    transition: 0.4s;
+}
+
+a{
+    font-size: large;
+    text-decoration: none;
+    color: #bbbbbb;
+}
+
+a:hover{
+    color: #bbbbbb;
+    text-decoration: none;
+}
+
+.underline{
+    position: relative;
+  }
+  
+.underline::before{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0;
+    height: 1px;
+    background-color: #bbbbbb;
+    transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+@media (hover: hover) and (pointer: fine) {
+    .underline:hover::before{
+      left: 0;
+      right: auto;
+      width: 100%;
+    }
+}
+
+#instr{
+    color: white;
+}
