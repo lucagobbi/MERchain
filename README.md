@@ -28,7 +28,7 @@ Once you're working in the venv, install there all the requirements:
 pip install -r path/to/requirements.txt
 ```
 
-Once you are in the MERchain folder run these commands:
+Once you are in the Merchain folder run these commands:
 
 ```
 python manage.py makemigrations
