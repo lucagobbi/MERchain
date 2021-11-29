@@ -1,0 +1,37 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+
+{% block head_title %}{{ block.super }} | Recap{% endblock head_title %}
+
+
+
+{% block content %}
+
+    <div class="row my-4 justify-content-center">
+        <div class="col-6">
+            <p><em>Auction title</em>: {{ auction.name }}</p>
+            <p><em>Seller</em>: {{ auction.user }}</p>
+            <p><em>Date added</em>: {{ auction.date_added }}</p>
+            <p><em>Auction deadline</em>: {{ auction.deadline }}</p>
+            <p><em>Opening bid</em>: {{ auction.price }}$</p>
+            <p><em>Winner</em>: {{ auction.winner }}</p>
+            <p><em>Last bid</em>: {{ auction.lastBid }}$</p>
+            <hr>
+            <p><em>txId</em>: <h6>{{ auction.txId }}</h6></p>
+        </div>
+        <div class="col-3">
+            <p>We are happy to inform you that the auction is over.<br>In this page you can find all the details about the operation.<br>
+               You can also check by yourself the notarization of the auction on the Ethereum Blockchain: 
+               click the button below to get a JSON response which collect all the infos related to the auction, copy and paste it in a SHA-256 generator.
+               Then, you can follow the link below to track the transaction by pasting the txId in the Ethereum scanner. 
+               You will get information about the notarization and an encrypted UTF-8 message which must be equal to the SHA-256 that you have generated from the JSON response.</p>
+            <a href="{% url 'json_recap' pk=auction.pk %}"><button class="btn btn-send">JSON</button></a>
+            <a href="https://xorbin.com/tools/sha256-hash-calculator">SHA256 Generator</a>
+            <br><br>
+            <a href="https://ropsten.etherscan.io">Ethereum scanner</a>
+        </div>
+    </div>
+    
+
+{% endblock content %}
