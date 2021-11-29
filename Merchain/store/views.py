@@ -13,7 +13,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from notifications.models import Notification
 import redis
 
-
+# setting up redis 
 r = redis.StrictRedis(host='127.0.0.1', port=6379, password='', db=0)
 
 now = timezone.now()
@@ -27,11 +27,11 @@ def home_view(request):
     slider1 = products[:3]
     slider2 = products[3:6]
 
-
+    # scan products to see if deadline is reached
     for product in products:
 
         if product.deadline < now:
-
+            # scenario without winner
             if product.winner is None:
                 product.done = True
                 product.save()
@@ -39,11 +39,13 @@ def home_view(request):
 
                 notify.send(request.user, recipient=request.user, verb=f'Your auction - {product.name} - is ended up without winners!', timestamp=now)
 
-
+            # scenario with winner
             else:
                 product.done = True
+                # serialize details about the auction
                 serializer = ProductSerializer(product)
-                #product.writeOnChain(serializer)
+                # broadcast to blockchain
+                product.writeOnChain(serializer)
                 product.save()
                 r.rpush(f'{product.name} - {product.user}', f'{product.winner} has won the auction')
                 notify.send(product, recipient=product.user, verb=f'Congratulations your auction - {product.name} - is over: {product.winner} has won!', timestamp=now)
@@ -55,7 +57,7 @@ def home_view(request):
 
     return render(request, 'store/homepage.html', context)
 
-
+# store view for products with pagination
 class StoreListView(ListView):
     paginate_by = 3
     context_object_name = 'products'
@@ -65,10 +67,11 @@ class StoreListView(ListView):
         return Product.objects.exclude(done=True).order_by('-date_added')
     
 
-
+# single page for each product
 def product_view(request, pk):
     product = get_object_or_404(Product, pk=pk)
     user = request.user
+    # setting up the form for bids
     form = BidForm(request.POST)
 
     if request.method == "POST":
@@ -77,13 +80,16 @@ def product_view(request, pk):
         if form.is_valid():
             form.save(commit=False)
 
+            # the seller cannot bid on the auction to increase the price
             if not product.user == user:
-
+                # if there are no bids on this one every bid is accepted
                 if product.lastBid == 0:
-
+                    # the value of the bid must be greater than the price fixed by the seller
                     if float(bid) > product.price:
-
+                        
+                        # save the bid as the last one
                         product.lastBid = bid
+                        # the bidder is now the potential winner of the auction
                         product.winner = user
                         product.save()
 
@@ -96,6 +102,7 @@ def product_view(request, pk):
                         messages.warning(request, 'You have to bid an higher amount than the opening bid!')
                 
                 else:
+                    # if there is already a bid saved as lastBid, the bid must be greater than that
                     if float(bid) > product.lastBid:
 
                         product.lastBid = bid
@@ -129,7 +136,7 @@ def product_view(request, pk):
     return render(request, 'store/product.html', context)
 
 
-
+# view for the creation of a new auction
 def new_product_view(request):
 
     if request.method == "POST":
@@ -139,10 +146,11 @@ def new_product_view(request):
             form.save(commit=False)
             form.instance.user = request.user
 
+            # the price must be positive
             if form.instance.price < 0:
                 messages.warning(request, 'You cannot place an order with a negative price!')
                 return redirect('/newproduct/')
-
+            # deadline must be in the future
             if form.instance.deadline < now:
                 messages.warning(request, 'You cannot set a deadline already reached!')
                 return redirect('/newproduct/')
@@ -162,7 +170,7 @@ def new_product_view(request):
 
     return render(request, 'store/newproduct.html', context)
  
-
+# recap view for every auction, in the front-end you can call this only if the auction has reached the deadline
 def recap_view(request, pk):
 
    auction = get_object_or_404(Product, pk=pk)
@@ -174,6 +182,7 @@ def recap_view(request, pk):
 
    return render(request, 'store/recap.html', context)
 
+# json recap for details about the auction
 def json_recap_view(request, pk):
     auction = get_object_or_404(Product, pk=pk)
 
@@ -181,9 +190,10 @@ def json_recap_view(request, pk):
     
     return JsonResponse(json.data)
 
+# notifications view
 def notifications_view(request):
     notifications = Notification.objects.filter(recipient=request.user).order_by('-timestamp')
-
+    # if you are calling this view automatically every notifications is mark as read
     notifications.mark_all_as_read()
     notifications.update()
 
@@ -191,11 +201,13 @@ def notifications_view(request):
 
     return render(request, 'store/notifications.html', context)
 
+# delete notifications view
 def notifications_delete_view(request):
     notifications = Notification.objects.filter(recipient=request.user)
     notifications.delete()
     return redirect('/notifications/')
 
+# search view to query products
 def search_view(request):
 
     if "q" in request.GET:
@@ -209,7 +221,7 @@ def search_view(request):
     else:
         return render(request, 'store/search.html')  
 
-
+# about view 
 def about_view(request):
     context = {
         'notifications': notifications,

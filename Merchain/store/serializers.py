@@ -1,6 +1,8 @@
 from .models import Product
 from rest_framework import serializers
 
+# serialize details about the auction
+
 class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:

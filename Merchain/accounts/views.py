@@ -33,6 +33,7 @@ def registration_view(request):
     context = {"form": form}
     return render(request, "accounts/registration.html", context)
 
+# profile view returning some infos related to the user
 def profile_view(request, id):
     user = get_object_or_404(User, id=id)
     profile = Profile.objects.filter(user=user)
