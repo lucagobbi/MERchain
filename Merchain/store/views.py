@@ -83,17 +83,17 @@ def product_view(request, pk):
             # the seller cannot bid on the auction to increase the price
             if not product.user == user:
                 # if there are no bids on this one every bid is accepted
-                if product.lastBid == 0:
+                if product.last_bid == 0:
                     # the value of the bid must be greater than the price fixed by the seller
                     if float(bid) > product.price:
                         
                         # save the bid as the last one
-                        product.lastBid = bid
+                        product.last_bid = bid
                         # the bidder is now the potential winner of the auction
                         product.winner = user
                         product.save()
 
-                        r.rpush(f"{product.name} - {product.user}", f"{date_time} - {product.winner} bids {product.lastBid}$")
+                        r.rpush(f"{product.name} - {product.user}", f"{date_time} - {product.winner} bids {product.last_bid}$")
 
                         messages.success(request, 'Your bid has been recorded!')
                         notify.send(request.user, recipient=product.user, verb=f'{request.user.username} has bid {bid}$ on your product: {product.name}', timestamp=now)
@@ -102,14 +102,14 @@ def product_view(request, pk):
                         messages.warning(request, 'You have to bid an higher amount than the opening bid!')
                 
                 else:
-                    # if there is already a bid saved as lastBid, the bid must be greater than that
-                    if float(bid) > product.lastBid:
+                    # if there is already a bid saved as last_bid, the bid must be greater than that
+                    if float(bid) > product.last_bid:
 
-                        product.lastBid = bid
+                        product.last_bid = bid
                         product.winner = user
                         product.save()
 
-                        r.rpush(f"{product.name} - {product.user}", f"{date_time} - {product.winner} bids {product.lastBid}$")
+                        r.rpush(f"{product.name} - {product.user}", f"{date_time} - {product.winner} bids {product.last_bid}$")
 
                         messages.success(request, 'Your bid has been recorded!')
                         notify.send(request.user, recipient=product.user, verb=f'{request.user.username} has bid {bid}$ on your product: {product.name}', timestamp=now)
