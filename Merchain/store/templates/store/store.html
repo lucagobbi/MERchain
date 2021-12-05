@@ -20,8 +20,8 @@
                 </div>
                 <div class="align-items-center align-content-center col-md-3 border-left mt-1">
                     <div class="mt-3 mt-lg-0 ml-lg-3 text-center">
-                    {% if product.price < product.lastBid %}
-                    <h3 class="my-4 font-weight-semibold">{{ product.lastBid }}$</h3>
+                    {% if product.price < product.last_bid %}
+                    <h3 class="my-4 font-weight-semibold">{{ product.last_bid }}$</h3>
                     {% else %}
                     <h3 class="my-4 font-weight-semibold">{{ product.price }}$</h3>
                     {% endif %}                    <h6>{{ product.deadline }}</h6>

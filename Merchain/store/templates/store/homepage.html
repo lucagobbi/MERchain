@@ -33,10 +33,10 @@
         <div class="col-4">
           <a href="{% url 'product' pk=product.pk %}"><img src="{{ product.image.url }}" class="d-block w-100 mb-2" alt="..."></a>
           <h6 class="text-center">{{ product.name }}</h6>
-          {% if product.lastBid == 0 %}
+          {% if product.last_bid == 0 %}
           <p class="text-center">{{ product.price }}$</p>
           {% else %}
-          <p class="text-center">{{ product.lastBid }}$</p>
+          <p class="text-center">{{ product.last_bid }}$</p>
           {% endif %}
         </div>
     {% endfor %}
@@ -50,10 +50,10 @@
         <div class="col-4">
           <a href="{% url 'product' pk=product.pk %}"><img src="{{ product.image.url }}" class="d-block w-100 mb-2" alt="..."></a>
           <h6 class="text-center">{{ product.name }}</h6>
-          {% if product.lastBid == 0 %}
+          {% if product.last_bid == 0 %}
           <p class="text-center">{{ product.price }}$</p>
           {% else %}
-          <p class="text-center">{{ product.lastBid }}$</p>
+          <p class="text-center">{{ product.last_bid }}$</p>
           {% endif %}
         </div>
         {% endfor %}
@@ -65,10 +65,10 @@
         <div class="col-4">
           <a href="{% url 'product' pk=product.pk %}"><img src="{{ product.image.url }}" class="d-block w-100 mb-2" alt="..."></a>
           <h6 class="text-center">{{ product.name }}</h6>
-          {% if product.lastBid == 0 %}
+          {% if product.last_bid == 0 %}
           <p class="text-center">{{ product.price }}$</p>
           {% else %}
-          <p class="text-center">{{ product.lastBid }}$</p>
+          <p class="text-center">{{ product.last_bid }}$</p>
           {% endif %}
         </div>
         {% endfor %}

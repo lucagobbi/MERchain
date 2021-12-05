@@ -9,7 +9,7 @@ class Product(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=None, related_name='user')
     name = models.CharField(max_length=200, null=True)
     price = models.FloatField(null=True, blank=True)
-    lastBid = models.FloatField(default=0, blank=True)
+    last_bid = models.FloatField(default=0, blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
     deadline = models.DateTimeField(auto_now_add=False, auto_now=False)
     description = models.CharField(max_length=5000, null=True)
